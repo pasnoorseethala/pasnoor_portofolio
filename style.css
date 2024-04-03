@@ -484,7 +484,8 @@ span.close{
 
 /* PHOTOGRAPHY SECTION */
 #photography {
-  display: relative;
+  position: relative;
+  
   
 }
 #photography p{
