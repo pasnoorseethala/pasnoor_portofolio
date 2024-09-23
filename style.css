@@ -414,8 +414,19 @@ article .icon {
 /* PROJECTS SECTION */
 
 #projects {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 70vh;
 }
+div.about-containers{
+  display: flex;
+  justify-content: ceneter;
+  margin: 150px;
+  gap: 50px;
+  width: 80%;
+}
+
 
 .color-container {
   border-color: rgb(163, 163, 163);
@@ -484,9 +495,8 @@ span.close{
 
 /* PHOTOGRAPHY SECTION */
 #photography {
-  position: relative;
-  margin-bottom:50px;
-  
+  position:relative;
+
   
 }
 #photography p{
