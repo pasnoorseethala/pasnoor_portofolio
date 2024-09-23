@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Connect</title>
+    <style>
+        body {
+            font-family: "Open Sans", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav li {
+            margin-right: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding-bottom: 5px;
+        }
+
+        nav a.active {
+            border-bottom: 2px solid #fff;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            background-image: url(./assets/profile-pic.png);
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        
+
+        .tab-content.active {
+            display: block;
+        }
+        .create-post{
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+            
+        }
+        #postTitle{
+            width: 30%;
+            height: 30px;
+            border-radius: 10px;
+            border: pink;
+            padding: 1%;
+            
+        }
+
+        .create-post, .goals, .tasks {
+            margin-bottom: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            background-color: #222;
+            border: none;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hashtags span {
+            margin-right: 10px;
+            color: #4a90e2;
+        }
+
+        button {
+            background-color: white;
+            color: #080808;
+            border: none;
+            padding: 5px 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: medium;
+
+        }
+
+        .goals-grid, .tasks-grid, .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .goal-card, .task-card, .event-card, .post {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .goal-card img, .task-card img, .event-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .add-btn {
+            background-color: transparent;
+            font-size: 30px;
+            color: rgb(69, 151, 210);
+
+        }
+
+        .task-tags span {
+            display: inline-block;
+            margin-right: 5px;
+            color: #4a90e2;
+            font-size: 0.8em;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #333;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .post-info h3 {
+            margin: 0;
+        }
+
+        .post-info p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .goals-grid, .tasks-grid, .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>SAHA</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-tab="home">Home</a></li>
+                    <li><a href="#" data-tab="feed">Feed</a></li>
+                    <li><a href="#" data-tab="events">Events</a></li>
+                </ul>
+            </nav>
+            <div class="profile-pic"></div>
+        </header>        
+
+        <main>
+            <section id="home" class="tab-content active">
+                <!-- Create Post Section -->
+<div class="create-post">
+    <h2>Create Post / Share Event</h2>
+    <input type="text" id="postTitle" placeholder="Enter title" />
+    <textarea id="postDescription" placeholder="Enter description..."></textarea>
+    <input type="file" id="imageInput" accept="image/*" style="margin: 10px 0;" />
+    <img id="previewImage" style="max-width: 50%; margin-top: 10px; display: none;" />
+
+    <div class="post-actions">
+        <div class="hashtags">
+            <span style="color: #FF6347;">#Togetherness</span>
+<span style="color: #32CD32;">#Uplifting</span>
+<span style="color: #1E90FF;">#FutureDays</span>
+        </div>
+        <button class="post-btn">Post</button>
+    </div>
+</div>
+
+
+    
+
+                
+                <!-- New Posts Section -->
+                <div class="posts">
+                    <h2>Posts</h2>
+                    <div id="postContentContainer"></div>
+                </div>
+            
+                <!-- Goals Section -->
+                <div class="goals">
+                    <h2>Goals <button class="add-btn">+</button></h2>
+                    <div class="goals-grid">
+                        <div class="goal-card">
+                            <img src="./assets/pietro-rampazzo-x5GcXFvJJhI-unsplash (1).jpg" alt="Marathon Goal">
+                            <h3>Marathon Goal</h3>
+                            <p>Run a marathon by end of the year.</p>
+                            <button>Details</button>
+                        </div>
+                        <div class="goal-card">
+                            <img src="./assets/sebastian-bednarek-ciV2lqVsDic-unsplash.jpg" alt="Home Office">
+                            <h3>Home Office Setup</h3>
+                            <p>Set up a productive home office space.</p>
+                            <button>Details</button>
+                        </div>
+                        <div class="goal-card">
+                            <img src="./assets/jared-rice-NTyBbu66_SI-unsplash.jpg" alt="Morning Yoga">
+                            <h3>Morning Yoga</h3>
+                            <p>Practice yoga every morning for mental clarity.</p>
+                            <button>Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tasks Section -->
+                <div class="tasks">
+                    <h2>Tasks <button class="add-btn">+</button></h2>
+                    <div class="tasks-grid">
+                        <div class="task-card">
+                            <img src="./assets/aranxa-esteve-S5DEUg2yUVU-unsplash.jpg" alt="Plan Event">
+                            <h3>Plan Event</h3>
+                            <p>Organize the family reunion event scheduled for next month.</p>
+                            <div class="task-tags">
+                                <span>#Event</span>
+                                <span>#Family</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <img src="./assets/scott-warman-NpNvI4ilT4A-unsplash.jpg" alt="Weekly Groceries">
+                            <h3>Weekly Groceries</h3>
+                            <p>Complete the grocery shopping for the upcoming week.</p>
+                            <div class="task-tags">
+                                <span>#Shopping</span>
+                                <span>#Groceries</span>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <img src="./assets/sable-flow-OagwrIInrZ8-unsplash.jpg" alt="Finish Project">
+                            <h3>Finish Project</h3>
+                            <p>Submit the final report for the ongoing project by Friday.</p>
+                            <div class="task-tags">
+                                <span>#Work</span>
+                                <span>#Deadline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <div id="feed" class="tab-content">
+                <h2>Feed</h2>
+                <div id="postsContainer">
+                    <div class="goals">
+                        <div class="goals-grid">
+                            <div class="goal-card">
+                                <img src="./assets/prchi-palwe-_sE09qRzM4c-unsplash.jpg" alt="Marathon Goal">
+                                <h3>Emerald Sharon</h3>
+                                <p>sharing my pumpkin pie recipe</p>
+                                <button>Details</button>
+                            </div>
+                            <div class="goal-card">
+                                <img src="./assets/fernando-tavora-GoBb-pbDl4k-unsplash.jpg" alt="Home Office">
+                                <h3>Went to Beach</h3>
+                            </div>
+                            <div class="goal-card">
+                                <img src="./assets/jacob-bentzinger-_HXFz-0g9w8-unsplash.jpg" alt="Morning Yoga">
+                                <h3>Went to a House Party</h3>
+                                <p>Also tried indian cuisine over there</p>
+                                <button>Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- Posts will be loaded here -->
+            </div>
+
+            <!-- <section id="feed" class="tab-content">
+                <h2>Recent Posts</h2>
+                <div id="feedContent"></div>
+            </section> -->
+
+            <section id="events" class="tab-content">
+                <div class="events-grid">
+                    <div class="event-card">
+                        <img src="./assets/hisu-lee-FTW8ADj5igs-unsplash.jpg" alt="Wedding Day">
+                        <h3>Wedding Day</h3>
+                        <p>Time: 3:00 PM</p>
+                        <p>Location: Rose Garden</p>
+                        <button>What's now?</button>
+                    </div>
+                    <div class="event-card">
+                        <img src="./assets/lika-yer-JVj9yy9DIr4-unsplash.jpg" alt="Movie Night">
+                        <h3>Movie Night</h3>
+                        <p>Time: 7:00 PM</p>
+                        <p>Location: Downtown Cinema</p>
+                        <button>What's now?</button>
+                    </div>
+                    <div class="event-card">
+                        <img src="./assets/freestocks-qlS6vMR2PpU-unsplash.jpg" alt="Birthday Bash">
+                        <h3>Birthday Bash</h3>
+                        <p>Time: 5:00 PM</p>
+                        <p>Location: Central Park</p>
+                        <button>What's now?</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    // Tab buttons
+    const feedTab = document.querySelector('[data-tab="feed"]');
+    const eventsTab = document.querySelector('[data-tab="events"]');
+
+    // Sections for Feed and Events
+    const feedSection = document.getElementById('feed');
+    const eventsSection = document.getElementById('events');
+    const homeSection = document.getElementById('home');
+
+    // Posts
+    const postBtn = document.querySelector('.post-btn');
+    const titleInput = document.getElementById('postTitle');
+    const descriptionTextarea = document.getElementById('postDescription');
+    const imageInput = document.getElementById('imageInput');
+    const previewImage = document.getElementById('previewImage');
+    const postContentContainer = document.getElementById('postContentContainer'); // Target for the Posts section
+    let imageBase64 = ''; // Variable to store the image as a Base64 string
+
+    // Handle image preview
+    imageInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imageBase64 = e.target.result; // Store Base64 string
+                previewImage.src = imageBase64; // Show image preview
+                previewImage.style.display = 'block'; // Display the image
+            };
+            reader.readAsDataURL(file); // Read the file as a Base64 URL
+        }
+    });
+
+    // Load posts
+    function loadPosts() {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        postContentContainer.innerHTML = ''; // Clear previous posts
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar"></div>
+                    <div class="post-info">
+                        <h3>${post.title || 'Anonymous User'}</h3>
+                        <p>${new Date(post.date).toLocaleDateString()}</p>
+                    </div>
+                </div>
+                <p>${post.description}</p>
+                ${post.image ? `<img src="${post.image}" style="max-width: 100%; margin-top: 10px;" />` : ''}
+            `;
+            postContentContainer.appendChild(postElement); // Append posts to the Posts section (above Goals)
+        });
+    }
+
+    // Save posts to localStorage
+    postBtn?.addEventListener('click', () => {
+        const title = titleInput.value.trim();
+        const description = descriptionTextarea.value.trim();
+        if (title || description || imageBase64) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.push({
+                title,
+                description,
+                image: imageBase64,
+                date: new Date().toISOString() // Add timestamp
+            });
+            localStorage.setItem('posts', JSON.stringify(posts)); // Save post
+            titleInput.value = ''; // Clear title input
+            descriptionTextarea.value = ''; // Clear description textarea
+            imageInput.value = ''; // Clear file input
+            previewImage.style.display = 'none'; // Hide the preview image
+            imageBase64 = ''; // Reset the image data
+            loadPosts(); // Reload posts after saving
+        }
+    });
+
+    // Load posts on page load
+    loadPosts();
+
+    // Handle navbar tabs
+    document.querySelectorAll('nav a').forEach(tab => {
+        tab.addEventListener('click', (event) => {
+            event.preventDefault();
+            document.querySelectorAll('.tab-content').forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(event.target.dataset.tab);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
+    });
+});
+
+
+
+    </script>
+</body>
+</html>
